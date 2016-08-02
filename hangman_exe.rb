@@ -4,9 +4,13 @@ require "hangman"
 require "hangman_views"
 
 class Game
-  def run
+  def run(mode)
     engine = Hangman::Engine.new
-    view = Hangman::SoberConsoleView.new(engine)
+    if mode == :normal
+      view = Hangman::ConsoleView.new(engine)
+    else
+      view = Hangman::PsychedelicConsoleView.new(engine)
+    end
     view.welcome
     until engine.game_over?
       view.show_state()
@@ -21,4 +25,9 @@ class Game
 end
 
 game = Game.new
-game.run
+puts "1- Normal mode; 2- LSD mode"
+mode = 0
+until mode == 1 or mode == 2
+  mode = gets.chomp.to_i
+end
+game.run({1=> :normal, 2=> :lsd}[mode])
