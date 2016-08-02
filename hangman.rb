@@ -12,10 +12,6 @@ module Hangman
       @case_sensitive = true
     end
 
-    def game_over?
-      word_guessed? or no_more_guesses?
-    end
-
     def show_progress
       @word.each_char.collect { |c| (letter_guessed?(c) ? c : "_") }.join("")
     end
@@ -31,11 +27,11 @@ module Hangman
     end
 
     def letter_guessed?(letter)
-      if @case_sensitive
-        @guessed_letters.include? letter
-      else
-        @guessed_letters.include? letter.downcase
-      end
+      @guessed_letters.include? (@case_sensitive ? letter : letter.downcase)
+    end
+
+    def game_over?
+      word_guessed? or no_more_guesses?
     end
 
     def word_guessed?
