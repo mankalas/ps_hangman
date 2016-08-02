@@ -60,8 +60,11 @@ module Hangman
     end
 
     def ask_guess
-      guess = gets.chomp
-      (guess =~ /[[:alpha:]]/) ? guess : nil
+      gets.chomp
+    end
+
+    def input_sane?(input = nil)
+      !!(input =~ /^[[:alpha:]]$/)
     end
 
     def game_over
@@ -80,9 +83,9 @@ module Hangman
       view.welcome
       until engine.game_over?
         view.show_state()
-        guess = nil
-        until guess != nil
+        until view.input_sane?
           guess = view.ask_guess
+          view.input_sane? guess
         end
         engine.guess(guess)
       end
