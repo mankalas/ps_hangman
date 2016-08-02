@@ -2,8 +2,10 @@ module Hangman
   MAX_GUESSES = 5
   WORDS = %w(hello world guinness food sea oxymoron)
 
-  class Hangman
+  class Engine
     attr_accessor :case_sensitive
+    attr_reader :number_of_wrong_guesses
+    attr_reader :word
 
     def initialize(word = WORDS.sample)
       @word = word
@@ -44,4 +46,47 @@ module Hangman
     end
   end
 
+  class ConsoleView
+    def initialize(engine)
+      @engine = engine
+    end
+
+    def welcome
+      puts "Welcome here!"
+    end
+
+    def show_state
+      puts "#{@engine.show_progress} (#{MAX_GUESSES - @engine.number_of_wrong_guesses} wrong guesses left)"
+    end
+
+    def ask_guess
+      guess = gets.chomp
+      (guess =~ /[[:alpha:]]/) ? guess : nil
+    end
+
+    def game_over
+      if @engine.win?
+        puts "Yay! You've won!"
+      else
+        puts "Too bad, you lose. The word was '#{@engine.word}'"
+      end
+    end
+  end
+
+  class Game
+    def run
+      engine = Engine.new
+      view = ConsoleView.new(engine)
+      view.welcome
+      until engine.game_over?
+        view.show_state()
+        guess = nil
+        until guess != nil
+          guess = view.ask_guess
+        end
+        engine.guess(guess)
+      end
+      view.game_over
+    end
+  end
 end

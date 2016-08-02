@@ -2,10 +2,10 @@ require "hangman"
 
 TEST_WORD = "HoRSe"
 
-describe Hangman do
+describe Hangman::Engine do
 
   before do
-    @hangman = Hangman::Hangman.new(TEST_WORD)
+    @hangman = Hangman::Engine.new(TEST_WORD)
   end
 
   it "should return only underscores when no guess has been made" do
