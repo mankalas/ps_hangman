@@ -1,11 +1,9 @@
-#require 'colorize'
-
 module Hangman
   class ConsoleView
 
     WELCOME_MESSAGE = "Welcome here!"
     WON_MESSAGE = "Yay! You've won!"
-    LOST_MESSAGE = "Too bad, you lose. "
+    LOST_MESSAGE = "Too bad, you lose."
 
     def initialize(engine)
       @engine = engine
@@ -52,7 +50,7 @@ module Hangman
       if @engine.win?
         puts "Yay! You've won!".yellow.on_green
       else
-        puts (LOST_MESSAGE + "The word was '#{@engine.word}'").red.on_black
+        puts (LOST_MESSAGE + " The word was '#{@engine.word}'").red.on_black
       end
     end
   end
