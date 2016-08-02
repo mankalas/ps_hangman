@@ -1,4 +1,5 @@
 require "hangman"
+require "hangman_views"
 
 TEST_WORD = "HoRSe"
 

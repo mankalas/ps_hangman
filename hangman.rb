@@ -46,50 +46,5 @@ module Hangman
     end
   end
 
-  class ConsoleView
-    def initialize(engine)
-      @engine = engine
-    end
 
-    def welcome
-      puts "Welcome here!"
-    end
-
-    def show_state
-      puts "#{@engine.show_progress} (#{MAX_GUESSES - @engine.number_of_wrong_guesses} wrong guesses left)"
-    end
-
-    def ask_guess
-      gets.chomp
-    end
-
-    def input_sane?(input = nil)
-      !!(input =~ /^[[:alpha:]]$/)
-    end
-
-    def game_over
-      if @engine.win?
-        puts "Yay! You've won!"
-      else
-        puts "Too bad, you lose. The word was '#{@engine.word}'"
-      end
-    end
-  end
-
-  class Game
-    def run
-      engine = Engine.new
-      view = ConsoleView.new(engine)
-      view.welcome
-      until engine.game_over?
-        view.show_state()
-        until view.input_sane?
-          guess = view.ask_guess
-          view.input_sane? guess
-        end
-        engine.guess(guess)
-      end
-      view.game_over
-    end
-  end
 end
