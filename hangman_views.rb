@@ -34,8 +34,6 @@ module Hangman
     end
   end
 
-  require 'colorize'
-
   class PsychedelicConsoleView < ConsoleView
     def welcome
       puts WELCOME_MESSAGE.red.on_yellow

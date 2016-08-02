@@ -2,6 +2,8 @@ module Hangman
   MAX_GUESSES = 5
   WORDS = %w(hello world guinness food sea oxymoron)
   UNIX_WORDS_PATH = '/usr/share/dict/words'
+  PLACEHOLDER = "_"
+  NO_DICT_ERROR = "No dictionary found. Falling back to simple word list."
 
   class Engine
     attr_accessor :case_sensitive
@@ -9,14 +11,14 @@ module Hangman
     attr_reader :word
 
     def initialize(word = nil)
-      @word = (word ? word : get_dictionary.sample)
-      @number_of_wrong_guesses ||= 0
+      @word = (word ? word : get_dictionary.sample) # Dirty?
+      @number_of_wrong_guesses = 0 # Use ||=?
       @guessed_letters = ""
       @case_sensitive = true
     end
 
     def show_progress
-      @word.each_char.collect { |c| (letter_guessed?(c) ? c : "_") }.join("")
+      @word.each_char.collect { |c| (letter_guessed?(c) ? c : PLACEHOLDER) }.join("")
     end
 
     def guess(letter)
@@ -52,7 +54,7 @@ module Hangman
       begin
         File.read(UNIX_WORDS_PATH).split
       rescue Errno::ENOENT
-        puts "No dictionary found. Falling back to simple word list."
+        puts NO_DICT_ERROR
         WORDS
       end
     end

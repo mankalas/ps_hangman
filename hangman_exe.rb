@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "hangman"
+# Should be in 'hangman_views', but messes with rspec.
+require 'colorize'
 require "hangman_views"
 
 class Game
