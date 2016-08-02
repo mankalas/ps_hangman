@@ -42,7 +42,7 @@ describe Hangman do
     expect(@hangman.game_over?).to eq false
     TEST_WORD.each_char { |c| @hangman.guess(c) }
     expect(@hangman.game_over?).to eq true
-    expect(@hangman.word_guessed?).to eq true
+    expect(@hangman.win?).to eq true
   end
 
   it "should end with a lose if the word has not been guessed after a
@@ -50,7 +50,7 @@ describe Hangman do
     expect(@hangman.game_over?).to eq false
     10.times { @hangman.guess('x') }
     expect(@hangman.game_over?).to eq true
-    expect(@hangman.word_guessed?).to eq false
+    expect(@hangman.win?).to eq false
   end
 
 end

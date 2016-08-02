@@ -37,9 +37,11 @@ module Hangman
     def word_guessed?
       @word.each_char.all? { |c| letter_guessed? c }
     end
+    alias_method :win?, :word_guessed?
 
     def no_more_guesses?
       @number_of_wrong_guesses >= MAX_GUESSES
     end
   end
+
 end
