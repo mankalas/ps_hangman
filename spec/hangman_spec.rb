@@ -73,7 +73,6 @@ describe Hangman::Engine do
     expect(@hangman.game_over?).to eq true
     expect(@hangman.win?).to eq false
   end
-
 end
 
 describe Hangman::ConsoleView do

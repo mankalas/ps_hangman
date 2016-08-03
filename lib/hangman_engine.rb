@@ -1,9 +1,6 @@
 module Hangman
   MAX_GUESSES = 5
-  WORDS = %w(hello world guinness food sea oxymoron)
-  UNIX_WORDS_PATH = '/usr/share/dict/words'
   PLACEHOLDER = "_"
-  NO_DICT_ERROR = "No dictionary found. Falling back to simple word list."
 
   class Validator
     def initialize(word)
@@ -46,8 +43,8 @@ module Hangman
     attr_reader :number_of_wrong_guesses
     attr_reader :word
 
-    def initialize(word: nil, case_sensitive: true)
-      @word = (word ? word : get_dictionary.sample) # Dirty?
+    def initialize(word:, case_sensitive: true)
+      @word = word
       @number_of_wrong_guesses = 0 # Use ||=?
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
@@ -73,17 +70,6 @@ module Hangman
 
     def no_more_guesses?
       @number_of_wrong_guesses >= MAX_GUESSES
-    end
-
-    private
-
-    def get_dictionary
-      begin
-        File.read(UNIX_WORDS_PATH).split
-      rescue Errno::ENOENT
-        puts NO_DICT_ERROR
-        WORDS
-      end
     end
   end
 end
