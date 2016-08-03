@@ -5,7 +5,7 @@ TEST_WORD = "HoRSe"
 describe Hangman::Engine do
 
   before do
-    @hangman = Hangman::Engine.new(TEST_WORD)
+    @hangman = Hangman::Engine.new(word: TEST_WORD)
   end
 
   it "should return only underscores when no guess has been made" do
@@ -30,12 +30,12 @@ describe Hangman::Engine do
     expect(@hangman.show_progress).to eq "H____"
   end
 
-  it "should show a badly cased letter if hangman is case sensitive" do
-    @hangman.case_sensitive = false
-    @hangman.guess("r")
-    expect(@hangman.show_progress).to eq "__R__"
-    @hangman.guess("S")
-    expect(@hangman.show_progress).to eq "__RS_"
+  it "should show a badly cased letter if hangman is case insensitive" do
+    cs_hangman = Hangman::Engine.new(word: TEST_WORD, case_sensitive: false)
+    cs_hangman.guess("r")
+    expect(cs_hangman.show_progress).to eq "__R__"
+    cs_hangman.guess("S")
+    expect(cs_hangman.show_progress).to eq "__RS_"
   end
 
   it "should end with a win if all letters have been guessed" do

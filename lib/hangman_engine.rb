@@ -5,34 +5,63 @@ module Hangman
   PLACEHOLDER = "_"
   NO_DICT_ERROR = "No dictionary found. Falling back to simple word list."
 
+  class Validator
+    def initialize(word)
+      @word = word
+      @guessed_letters = ""
+    end
+  end
+
+  class CaseSensitiveValidator < Validator
+    def initialize(word)
+      super(word)
+    end
+
+    def validate(letter)
+      @guessed_letters << letter
+      @word.include? letter
+    end
+
+    def letter_guessed?(letter)
+      @guessed_letters.include? letter
+    end
+  end
+
+  class CaseInsensitiveValidator < Validator
+    def initialize(word)
+      super(word)
+    end
+
+    def validate(letter)
+      @guessed_letters << letter.downcase
+      @word.downcase.include? letter.downcase
+    end
+
+    def letter_guessed?(letter)
+      @guessed_letters.include? letter.downcase
+    end
+  end
+
   class Engine
     attr_accessor :case_sensitive
     attr_reader :number_of_wrong_guesses
     attr_reader :word
 
-    def initialize(word = nil)
+    def initialize(word: nil, case_sensitive: true)
       @word = (word ? word : get_dictionary.sample) # Dirty?
       @number_of_wrong_guesses = 0 # Use ||=?
       @guessed_letters = ""
-      @case_sensitive = true
+      @validator = case_sensitive ?
+                     CaseSensitiveValidator.new(word) :
+                     CaseInsensitiveValidator.new(word)
     end
 
     def show_progress
-      @word.each_char.collect { |c| (letter_guessed?(c) ? c : PLACEHOLDER) }.join("")
+      @word.each_char.collect { |c| @validator.letter_guessed?(c) ? c : PLACEHOLDER }.join("")
     end
 
     def guess(letter)
-      if @case_sensitive
-        @guessed_letters << letter
-        @number_of_wrong_guesses += 1 unless @word.include? letter
-      else
-        @guessed_letters << letter.downcase
-        @number_of_wrong_guesses += 1 unless @word.downcase.include? letter.downcase
-      end
-    end
-
-    def letter_guessed?(letter)
-      @guessed_letters.include? (@case_sensitive ? letter : letter.downcase)
+      @number_of_wrong_guesses += 1 unless @validator.validate(letter)
     end
 
     def game_over?
@@ -40,7 +69,7 @@ module Hangman
     end
 
     def word_guessed?
-      @word.each_char.all? { |c| letter_guessed? c }
+      @word.each_char.all? { |c| @validator.letter_guessed? c }
     end
     alias_method :win?, :word_guessed?
 
