@@ -1,4 +1,5 @@
 module Hangman
+  DEFAUT_MAX_LIVES = 5
   PLACEHOLDER = "_"
 
   class Validator
@@ -39,7 +40,7 @@ module Hangman
   end
 
   class Engine
-    def initialize(word:, case_sensitive: true, lives: 5)
+    def initialize(word:, case_sensitive: true, lives: DEFAUT_MAX_LIVES)
       @word = word
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
