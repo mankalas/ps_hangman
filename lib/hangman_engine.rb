@@ -1,5 +1,4 @@
 module Hangman
-  MAX_GUESSES = 5
   PLACEHOLDER = "_"
 
   class Validator
@@ -40,15 +39,14 @@ module Hangman
   end
 
   class Engine
-    attr_reader :number_of_wrong_guesses
     attr_reader :word
 
-    def initialize(word:, case_sensitive: true)
+    def initialize(word:, case_sensitive: true, lives: 5)
       @word = word
-      @number_of_wrong_guesses = 0 # Use ||=?
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
                      CaseInsensitiveValidator.new(word)
+      @lives = lives
     end
 
     def show_progress
@@ -56,11 +54,11 @@ module Hangman
     end
 
     def guess(letter)
-      @number_of_wrong_guesses += 1 unless @validator.validate(letter)
+      @lives -= 1 unless @validator.validate(letter)
     end
 
     def game_over?
-      word_guessed? or no_more_guesses?
+      word_guessed? or no_more_life?
     end
 
     def word_guessed?
@@ -68,8 +66,8 @@ module Hangman
     end
     alias_method :win?, :word_guessed?
 
-    def no_more_guesses?
-      @number_of_wrong_guesses >= MAX_GUESSES
+    def no_more_life?
+      @lives < 0
     end
   end
 end
