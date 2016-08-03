@@ -43,14 +43,12 @@ module Hangman
   end
 
   class Engine
-    attr_accessor :case_sensitive
     attr_reader :number_of_wrong_guesses
     attr_reader :word
 
     def initialize(word: nil, case_sensitive: true)
       @word = (word ? word : get_dictionary.sample) # Dirty?
       @number_of_wrong_guesses = 0 # Use ||=?
-      @guessed_letters = ""
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
                      CaseInsensitiveValidator.new(word)

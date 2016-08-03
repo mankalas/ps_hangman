@@ -2,8 +2,45 @@ require "hangman"
 
 TEST_WORD = "HoRSe"
 
-describe Hangman::Engine do
+describe Hangman::CaseSensitiveValidator do
+  before do
+    @validator = Hangman::CaseSensitiveValidator.new(TEST_WORD)
+  end
 
+  it "should validate only right cased letters" do
+    expect(@validator.validate('H')).to be true
+    expect(@validator.letter_guessed?('H')).to be true
+    expect(@validator.letter_guessed?('h')).to be false
+    expect(@validator.validate('o')).to be true
+    expect(@validator.letter_guessed?('o')).to be true
+    expect(@validator.letter_guessed?('h')).to be false
+    expect(@validator.letter_guessed?('O')).to be false
+    expect(@validator.validate('h')).to be false
+    expect(@validator.letter_guessed?('h')).to be true
+    expect(@validator.validate('O')).to be false
+    expect(@validator.letter_guessed?('h')).to be true
+    expect(@validator.validate('x')).to be false
+  end
+end
+
+describe Hangman::CaseInsensitiveValidator do
+  before do
+    @validator = Hangman::CaseInsensitiveValidator.new(TEST_WORD)
+  end
+
+  it "should validate only right cased letters" do
+    expect(@validator.validate('H')).to be true
+    expect(@validator.letter_guessed?('H')).to be true
+    expect(@validator.letter_guessed?('h')).to be true
+    expect(@validator.validate('o')).to be true
+    expect(@validator.letter_guessed?('o')).to be true
+    expect(@validator.letter_guessed?('O')).to be true
+    expect(@validator.validate('r')).to be true
+    expect(@validator.validate('x')).to be false
+  end
+end
+
+describe Hangman::Engine do
   before do
     @hangman = Hangman::Engine.new(word: TEST_WORD)
   end
@@ -20,22 +57,6 @@ describe Hangman::Engine do
   it "should not show a wrongly guessed letter" do
     @hangman.guess("a")
     expect(@hangman.show_progress).to eq "_" * TEST_WORD.length
-  end
-
-  it "should not show a badly cased letter if hangman is case sensitive" do
-    @hangman.case_sensitive = true
-    @hangman.guess("h")
-    expect(@hangman.show_progress).to eq "_" * TEST_WORD.length
-    @hangman.guess("H")
-    expect(@hangman.show_progress).to eq "H____"
-  end
-
-  it "should show a badly cased letter if hangman is case insensitive" do
-    cs_hangman = Hangman::Engine.new(word: TEST_WORD, case_sensitive: false)
-    cs_hangman.guess("r")
-    expect(cs_hangman.show_progress).to eq "__R__"
-    cs_hangman.guess("S")
-    expect(cs_hangman.show_progress).to eq "__RS_"
   end
 
   it "should end with a win if all letters have been guessed" do
