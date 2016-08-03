@@ -42,7 +42,7 @@ end
 
 describe Hangman::Engine do
   before do
-    @hangman = Hangman::Engine.new(word: TEST_WORD)
+    @hangman = Hangman::Engine.new(word: TEST_WORD, lives: 5)
   end
 
   it "should return only underscores when no guess has been made" do

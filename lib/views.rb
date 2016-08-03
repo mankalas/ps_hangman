@@ -1,3 +1,5 @@
+require 'colorize'
+
 module Hangman
   class ConsoleView
 
@@ -22,7 +24,7 @@ module Hangman
     end
 
     def show_state
-      puts "#{@engine.show_progress} (#{MAX_GUESSES - @engine.number_of_wrong_guesses} wrong guesses left)"
+      puts "#{@engine.show_progress} (#{@engine.lives} wrong guesses left)"
     end
 
     def game_over
@@ -34,13 +36,14 @@ module Hangman
     end
   end
 
+
   class PsychedelicConsoleView < ConsoleView
     def welcome
       puts WELCOME_MESSAGE.red.on_yellow
     end
 
     def show_state
-      "#{@engine.show_progress} (#{MAX_GUESSES - @engine.number_of_wrong_guesses} wrong guesses left)".each_char.map { |c| print c.colorize(String.colors.sample) }
+      "#{@engine.show_progress} (#{@engine.lives} wrong guesses left)".each_char.map { |c| print c.colorize(String.colors.sample) }
       puts
     end
 

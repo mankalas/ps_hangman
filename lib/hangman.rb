@@ -4,11 +4,19 @@ require 'views'
 module Hangman
   WORDS = %w(hello world guinness food sea oxymoron)
   UNIX_WORDS_PATH = '/usr/share/dict/words'
+  DEFAULT_MAX_LIVES = 5
 
   class Game
-    def run(mode)
-      engine = Engine.new(pick_word)
-      if mode == :normal
+    def initialize(mode: :normal,
+                   lives: DEFAULT_MAX_LIVES)
+      @mode = mode
+      @lives = lives
+    end
+
+    def run()
+      engine = Engine.new(word: pick_word,
+                          lives: @lives)
+      if @mode == :normal
         view = ConsoleView.new(engine)
       else
         view = PsychedelicConsoleView.new(engine)

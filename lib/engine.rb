@@ -5,9 +5,12 @@ module Hangman
   PLACEHOLDER = "_"
 
   class Engine
+    attr_reader :lives
+    attr_reader :word
+
     def initialize(word:,
                    case_sensitive: true,
-                   lives: DEFAUT_MAX_LIVES)
+                   lives:)
       @word = word
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
