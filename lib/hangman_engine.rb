@@ -39,8 +39,6 @@ module Hangman
   end
 
   class Engine
-    attr_reader :word
-
     def initialize(word:, case_sensitive: true, lives: 5)
       @word = word
       @validator = case_sensitive ?
