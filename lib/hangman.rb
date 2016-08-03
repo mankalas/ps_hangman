@@ -1,5 +1,5 @@
-require 'hangman_engine'
-require 'hangman_views'
+require 'engine'
+require 'views'
 
 module Hangman
   WORDS = %w(hello world guinness food sea oxymoron)

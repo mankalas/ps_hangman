@@ -5,7 +5,11 @@ Gem::Specification.new do |s|
   s.summary = 'Hangman'
   s.description = 'A Hangman game'
   s.authors = ['Vincent Boucheny']
+  s.homepage = "http://nowhere.org"
   s.email = 'vincent.boucheny@powershop.co.nz'
-  s.files = ['lib/hangman.rb', 'lib/hangman_engine.rb', 'lib/hangman_views.rb']
+  s.files = ['lib/hangman.rb',
+             'lib/engine.rb',
+             'lib/views.rb',
+             'lib/validators.rb']
   s.license = 'Beerware'
 end
