@@ -1,6 +1,7 @@
-require 'colorize'
+#require 'colorize'
 
 module Hangman
+
   class ConsoleView
 
     WELCOME_MESSAGE = "Welcome here!"
