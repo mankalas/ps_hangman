@@ -102,3 +102,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+TEST_WORD = "HoRSe"

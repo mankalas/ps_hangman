@@ -5,7 +5,8 @@ module Hangman
 
     WELCOME_MESSAGE = "Welcome here!"
     WON_MESSAGE = "Yay! You've won!"
-    LOST_MESSAGE = "Too bad, you lose."
+    LOST_MESSAGE = "Too bad, you lose. The word was '%s'"
+    GAME_STATE = "%s (%s wrong guesses left)"
 
     def initialize(engine)
       @engine = engine
@@ -24,18 +25,17 @@ module Hangman
     end
 
     def show_state
-      puts "#{@engine.show_progress} (#{@engine.lives} wrong guesses left)"
+      puts GAME_STATE % [@engine.show_progress, @engine.lives]
     end
 
     def game_over
       if @engine.win?
-        puts "Yay! You've won!"
+        puts WON_MESSAGE
       else
-        puts LOST_MESSAGE + "The word was '#{@engine.word}'"
+        puts LOST_MESSAGE % [@engine.word]
       end
     end
   end
-
 
   class PsychedelicConsoleView < ConsoleView
     def welcome
@@ -43,15 +43,16 @@ module Hangman
     end
 
     def show_state
-      "#{@engine.show_progress} (#{@engine.lives} wrong guesses left)".each_char.map { |c| print c.colorize(String.colors.sample) }
+      final_string = GAME_STATE % [@engine.show_progress, @engine.lives]
+      final_string.each_char.map { |c| print c.colorize(String.colors.sample) }
       puts
     end
 
     def game_over
       if @engine.win?
-        puts "Yay! You've won!".yellow.on_green
+        puts WON_MESSAGE.yellow.on_green
       else
-        puts (LOST_MESSAGE + " The word was '#{@engine.word}'").red.on_black
+        puts (LOST_MESSAGE % [@engine.word]).red.on_black
       end
     end
   end

@@ -1,21 +1,18 @@
 require 'validators'
 
 module Hangman
-  DEFAUT_MAX_LIVES = 5
   PLACEHOLDER = "_"
 
   class Engine
     attr_reader :lives
     attr_reader :word
 
-    def initialize(word:,
-                   case_sensitive: true,
-                   lives:)
+    def initialize(word, lives, case_sensitive: true)
       @word = word
+      @lives = lives
       @validator = case_sensitive ?
                      CaseSensitiveValidator.new(word) :
                      CaseInsensitiveValidator.new(word)
-      @lives = lives
     end
 
     def show_progress
