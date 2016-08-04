@@ -24,7 +24,7 @@ describe Hangman::CaseInsensitiveValidator do
 
   let(:validator) { Hangman::CaseInsensitiveValidator.new(TEST_WORD) }
 
-  it "should validate only right cased letters" do
+  it "should validate letters no matter the case" do
     expect(validator.validate('H')).to be true
     expect(validator.letter_guessed?('H')).to be true
     expect(validator.letter_guessed?('h')).to be true

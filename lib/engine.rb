@@ -7,7 +7,9 @@ module Hangman
     attr_reader :lives
     attr_reader :word
 
-    def initialize(word:, lives:, case_sensitive: true)
+    def initialize(word:,
+                   lives:,
+                   case_sensitive: true)
       @word = word
       @lives = lives
       @validator = case_sensitive ?

@@ -7,10 +7,6 @@ module Hangman
   end
 
   class CaseSensitiveValidator < Validator
-    def initialize(word)
-      super(word)
-    end
-
     def validate(letter)
       @guessed_letters << letter
       @word.include? letter
@@ -22,10 +18,6 @@ module Hangman
   end
 
   class CaseInsensitiveValidator < Validator
-    def initialize(word)
-      super(word)
-    end
-
     def validate(letter)
       @guessed_letters << letter.downcase
       @word.downcase.include? letter.downcase
