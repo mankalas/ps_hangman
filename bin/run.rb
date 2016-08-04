@@ -26,7 +26,6 @@ optparse = OptionParser.new do |opts|
 end
 
 optparse.parse!
-p options
 
 game = Hangman::Game.new(lives: options[:lives],
                          mode: options[:mode])
