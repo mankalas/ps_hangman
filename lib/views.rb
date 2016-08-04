@@ -38,7 +38,7 @@ module Hangman
     end
   end
 
-  class PsychedelicConsoleView < ConsoleView
+  class LSDConsoleView < ConsoleView
     def welcome
       puts WELCOME_MESSAGE.red.on_yellow
     end
