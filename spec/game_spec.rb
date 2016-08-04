@@ -28,14 +28,14 @@ describe Hangman::Game do
   end
 
   it "takes into account the given word" do
-    game = Hangman::Game.new(TEST_WORD)
+    game = Hangman::Game.new(word: TEST_WORD)
     expect(game.engine.word).to eq TEST_WORD
   end
 
   it "takes into account the given number of lives" do
     NB_LIVES = 42
-    game = Hangman::Game.new(TEST_WORD, NB_LIVES)
+    game = Hangman::Game.new(word: TEST_WORD,
+                             lives: NB_LIVES)
     expect(game.engine.lives).to eq NB_LIVES
   end
-
 end

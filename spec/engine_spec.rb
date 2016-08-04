@@ -2,7 +2,8 @@ require 'engine'
 
 describe Hangman::Engine do
 
-  let(:engine) { Hangman::Engine.new(TEST_WORD, 5) }
+  let(:engine) { Hangman::Engine.new(word: TEST_WORD,
+                                     lives: 5) }
 
   it "should return only underscores when no guess has been made" do
     expect(engine.show_progress).to eq "_" * TEST_WORD.length

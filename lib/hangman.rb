@@ -9,10 +9,11 @@ module Hangman
   class Game
     attr_reader :engine
 
-    def initialize(word = pick_word,
-                   lives = DEFAULT_MAX_LIVES,
+    def initialize(word: pick_word,
+                   lives:  DEFAULT_MAX_LIVES,
                    view_class: ConsoleView)
-      @engine = Engine.new(word, lives)
+      @engine = Engine.new(word: word,
+                           lives: lives)
       @view = view_class.new(@engine)
     end
 
