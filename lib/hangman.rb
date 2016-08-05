@@ -7,27 +7,31 @@ module Hangman
   DEFAULT_MAX_LIVES = 5
 
   class Game
-    attr_reader :engine
+    attr_reader :engine, :view
 
     def initialize(word: pick_word,
-                   lives:  DEFAULT_MAX_LIVES,
+                   lives: DEFAULT_MAX_LIVES,
                    view_class: ConsoleView)
       @engine = Engine.new(word: word,
                            lives: lives)
       @view = view_class.new(@engine)
     end
 
-    def run()
-      @view.welcome
-      until @engine.game_over?
-        @view.show_state()
-        guess = nil
-        until @view.input_sane? guess
-          guess = @view.ask_guess
+    def run
+      view.welcome
+
+      until engine.game_over?
+        view.show_state
+
+        guess = view.ask_guess
+        until view.input_sane?(guess)
+          guess = view.ask_guess
         end
-        @engine.guess(guess)
+
+        engine.guess(guess)
       end
-      @view.game_over
+
+      view.game_over
     end
 
     def pick_word

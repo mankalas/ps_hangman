@@ -1,5 +1,7 @@
 require 'engine'
 
+TEST_WORD = "HoRSe"
+
 describe Hangman::Engine do
 
   let(:engine) { Hangman::Engine.new(word: TEST_WORD,

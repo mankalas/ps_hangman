@@ -4,12 +4,9 @@ module Hangman
   PLACEHOLDER = "_"
 
   class Engine
-    attr_reader :lives
-    attr_reader :word
+    attr_reader :lives, :word
 
-    def initialize(word:,
-                   lives:,
-                   case_sensitive: true)
+    def initialize(word:, lives:, case_sensitive: true)
       @word = word
       @lives = lives
       @validator = case_sensitive ?
@@ -18,7 +15,9 @@ module Hangman
     end
 
     def show_progress
-      @word.each_char.collect { |c| @validator.letter_guessed?(c) ? c : PLACEHOLDER }.join("")
+      @word.each_char.collect do |char|
+        @validator.letter_guessed?(char) ? char : PLACEHOLDER
+      end.join
     end
 
     def guess(letter)
@@ -26,11 +25,11 @@ module Hangman
     end
 
     def game_over?
-      word_guessed? or no_more_life?
+      word_guessed? || no_more_life?
     end
 
     def word_guessed?
-      @word.each_char.all? { |c| @validator.letter_guessed? c }
+      @word.each_char.all? { |char| @validator.letter_guessed?(char) }
     end
     alias_method :win?, :word_guessed?
 
