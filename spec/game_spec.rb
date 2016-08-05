@@ -1,22 +1,6 @@
 require 'hangman'
 require 'views'
 
-class TestView < Hangman::ConsoleView
-  def welcome
-  end
-
-  def ask_guess
-    ('a'..'z').to_a.sample
-  end
-
-  def show_state
-  end
-
-  def game_over
-    @engine.game_over?
-  end
-end
-
 describe Hangman::Game do
 
   describe "#instanciate" do
@@ -38,7 +22,16 @@ describe Hangman::Game do
 
   describe "#run" do
     it "runs a normal game" do
-      Hangman::Game.new(view_class: TestView).run
+      view_instance = double("view_instance")
+      allow(view_instance).to receive(:welcome).and_return("Hi!")
+      allow(view_instance).to receive(:show_state).and_return("Chiche")
+      allow(view_instance).to receive(:ask_guess).and_return(('a'..'z').to_a.sample)
+      allow(view_instance).to receive(:input_sane?).and_return(true)
+      allow(view_instance).to receive(:game_over).and_return("GO")
+      view_class = double("view_class")
+      allow(view_class).to receive(:new).and_return (view_instance)
+      #allow(view).to receive(:ask_guess).and_return(('a'..'z').to_a.sample)
+      Hangman::Game.new(view_class: view_class).run
     end
   end
 end
