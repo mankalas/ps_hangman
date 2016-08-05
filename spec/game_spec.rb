@@ -21,7 +21,7 @@ describe Hangman::Game do
   end
 
   describe "#run" do
-    it "runs a normal game" do
+    it "runs a game until game over" do
       view_instance = double("view_instance")
       allow(view_instance).to receive(:welcome).and_return("Hi!")
       allow(view_instance).to receive(:show_state).and_return("Chiche")
@@ -30,8 +30,9 @@ describe Hangman::Game do
       allow(view_instance).to receive(:game_over).and_return("GO")
       view_class = double("view_class")
       allow(view_class).to receive(:new).and_return (view_instance)
-      #allow(view).to receive(:ask_guess).and_return(('a'..'z').to_a.sample)
-      Hangman::Game.new(view_class: view_class).run
+      game = Hangman::Game.new(view_class: view_class)
+      game.run
+      expect(game.engine.game_over?).to be true
     end
   end
 end

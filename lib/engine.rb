@@ -14,10 +14,10 @@ module Hangman
                      CaseInsensitiveValidator.new(word)
     end
 
-    def show_progress
+    def progress
       @word.each_char.collect do |char|
-        @validator.letter_guessed?(char) ? char : PLACEHOLDER
-      end.join
+        [char, @validator.letter_guessed?(char)]
+      end.to_h
     end
 
     def guess(letter)
