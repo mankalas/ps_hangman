@@ -9,7 +9,7 @@ module Hangman
     LOST_MESSAGE = "Too bad, you lose. The word was '%s'"
     GAME_STATE = "%s (%s wrong guesses left)"
 
-    def initialize(engine)
+    def initialize(engine:)
       @engine = engine
     end
 

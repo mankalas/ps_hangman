@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "hangman"
+
+game = Hangman::Game.new
+validator = Hangman::CaseInsensitiveValidator.new
+engine = Hangman::Engine.new(word: "Chiche", lives: 5, validator: validator)
+view = Hangman::ConsoleView.new(engine: engine)
+game.run(engine: engine, view: view)
