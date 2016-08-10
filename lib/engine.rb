@@ -2,7 +2,7 @@ require 'validators'
 
 module Hangman
   class Engine
-    attr_reader :lives
+    attr_reader :word, :lives
 
     def initialize(word:, lives:, validator:)
       @word = word
