@@ -1,37 +1,30 @@
 require 'validators'
 
 module Hangman
-  PLACEHOLDER = "_"
-
   class Engine
-    attr_reader :lives, :word
+    attr_reader :lives
 
-    def initialize(word:, lives:, case_sensitive: true)
+    def initialize(word:, lives:, validator:)
       @word = word
       @lives = lives
-      @validator = case_sensitive ?
-                     CaseSensitiveValidator.new(word) :
-                     CaseInsensitiveValidator.new(word)
+      @validator = validator
     end
 
     def progress
-      @word.each_char.collect do |char|
-        [char, @validator.letter_guessed?(char)]
-      end.to_h
+      @validator.progress(@word)
     end
 
     def guess(letter)
-      @lives -= 1 unless @validator.validate(letter)
+      @lives -= 1 unless @validator.validate(letter, @word)
     end
 
     def game_over?
-      word_guessed? || no_more_life?
+      win? || no_more_life?
     end
 
-    def word_guessed?
-      @word.each_char.all? { |char| @validator.letter_guessed?(char) }
+    def win?
+      @validator.word_guessed?(@word)
     end
-    alias_method :win?, :word_guessed?
 
     def no_more_life?
       @lives < 0
