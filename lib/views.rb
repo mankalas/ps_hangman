@@ -33,7 +33,7 @@ module Hangman
       if @engine.win?
         puts WON_MESSAGE
       else
-        puts LOST_MESSAGE % [@engine.word]
+        puts LOST_MESSAGE % [@engine.validator.word]
       end
     end
   end
