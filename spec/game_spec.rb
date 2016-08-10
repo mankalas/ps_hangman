@@ -3,36 +3,23 @@ require 'views'
 
 describe Hangman::Game do
 
-  describe "#instanciate" do
-    it "accepts no parameter" do
-      Hangman::Game.new
-    end
+  let(:view) { double("Hangman::View") }
+  let(:engine) { double("Hangman::Engine") }
+  let(:game) { Hangman::Game.new }
 
-    it "accepts a word as parameter" do
-      game = Hangman::Game.new(word: TEST_WORD)
-      expect(game.engine.word).to eq TEST_WORD
-    end
+  it "runs a game until it's over" do
+    allow(view).to receive(:ask_guess).and_return('%')
+    allow(view).to receive(:input_sane?).and_return(true)
+    expect(view).to receive(:welcome).once
+    expect(view).to receive(:show_state).at_least(:once)
+    expect(view).to receive(:ask_guess).at_least(:once)
+    expect(view).to receive(:input_sane?).at_least(:once)
+    expect(view).to receive(:game_over).once
 
-    it "accepts a number of lives as parameter" do
-      NB_LIVES = 42
-      game = Hangman::Game.new(lives: NB_LIVES)
-      expect(game.engine.lives).to eq NB_LIVES
-    end
-  end
+    allow(engine).to receive(:game_over?).and_return(false, false, false, true)
+    expect(engine).to receive(:game_over?).at_least(:once)
+    expect(engine).to receive(:guess).at_least(:once)
 
-  describe "#run" do
-    it "runs a game until game over" do
-      view_instance = double("view_instance")
-      allow(view_instance).to receive(:welcome).and_return("Hi!")
-      allow(view_instance).to receive(:show_state).and_return("Chiche")
-      allow(view_instance).to receive(:ask_guess).and_return(('a'..'z').to_a.sample)
-      allow(view_instance).to receive(:input_sane?).and_return(true)
-      allow(view_instance).to receive(:game_over).and_return("GO")
-      view_class = double("view_class")
-      allow(view_class).to receive(:new).and_return (view_instance)
-      game = Hangman::Game.new(view_class: view_class)
-      game.run
-      expect(game.engine.game_over?).to be true
-    end
+    game.run(engine: engine, view: view)
   end
 end

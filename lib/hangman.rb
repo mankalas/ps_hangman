@@ -2,22 +2,8 @@ require 'engine'
 require 'views'
 
 module Hangman
-  WORDS = %w(hello world guinness food sea oxymoron)
-  UNIX_WORDS_PATH = '/usr/share/dict/words'
-  DEFAULT_MAX_LIVES = 5
-
   class Game
-    attr_reader :engine, :view
-
-    def initialize(word: pick_word,
-                   lives: DEFAULT_MAX_LIVES,
-                   view_class: ConsoleView)
-      @engine = Engine.new(word: word,
-                           lives: lives)
-      @view = view_class.new(@engine)
-    end
-
-    def run
+    def run(engine:, view:)
       view.welcome
 
       until engine.game_over?
@@ -33,13 +19,12 @@ module Hangman
 
       view.game_over
     end
+  end
 
-    def pick_word
-      begin
-        File.read(UNIX_WORDS_PATH).split.sample
-      rescue Errno::ENOENT
-        WORDS.sample
-      end
+  class WordPicker
+    UNIX_WORDS_PATH = '/usr/share/dict/words'
+    def pick
+      File.read(UNIX_WORDS_PATH).split.sample
     end
   end
 end

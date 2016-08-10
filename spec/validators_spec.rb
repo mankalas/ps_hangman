@@ -1,7 +1,6 @@
 require 'validators'
 
 describe Hangman::Validator do
-
   let(:test_word) { "HoRSe" }
 
   shared_examples "a validator" do
@@ -11,6 +10,16 @@ describe Hangman::Validator do
       expect(validator.validate('aa', test_word)).to be_falsey
       expect(validator.validate('', test_word)).to be_falsey
       expect(validator.validate(nil, test_word)).to be_falsey
+    end
+
+    context "when no guess has been made" do
+      let(:expected_progress) do
+        test_word.each_char.collect{ |char| [char, false] }.to_h
+      end
+
+      it "no progress is made" do
+        expect(validator.progress(test_word)).to match expected_progress
+      end
     end
 
     context "when a good letter has been guessed" do
@@ -32,6 +41,22 @@ describe Hangman::Validator do
     context "when a bad letter has been guesses" do
       it "does not update progress" do
         expect{ validator.validate('x', test_word) }.not_to change { validator.progress(test_word) }
+      end
+    end
+
+    context "#word_guessed?" do
+      context "when every word's letter has been guessed" do
+        it "returns true" do
+          allow(validator).to receive(:letter_guessed?).and_return(true)
+          expect(validator.word_guessed?(test_word)).to be_truthy
+        end
+      end
+
+      context "when not every word's letter has been guessed" do
+        it "return false" do
+          allow(validator).to receive(:letter_guessed?).and_return(false)
+          expect(validator.word_guessed?(test_word)).to be_falsey
+        end
       end
     end
   end
