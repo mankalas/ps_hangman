@@ -23,9 +23,14 @@ module Hangman
       WELCOME_MESSAGE
     end
 
+    def build_state_string
+      @engine.word.each_char.map do |char|
+        @engine.progress[char] ? char : PLACEHOLDER
+      end.join
+    end
+
     def build_state_message
-      progress_string = @engine.progress.each.map { |k, v| v ? k : PLACEHOLDER }.join
-      GAME_STATE % [progress_string, @engine.lives]
+      GAME_STATE % [build_state_string, @engine.lives]
     end
 
     def build_game_over_message
