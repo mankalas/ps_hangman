@@ -18,6 +18,19 @@ describe Hangman::ConsoleView do
     expect(view.input_sane?('')).to be_falsey
   end
 
+  describe "#build_state_string" do
+
+    it "shows a single revealed letter" do
+      allow(engine).to receive(:word).and_return("a")
+      allow(engine).to receive(:progress).and_return("a" => true)
+      expect(view.build_state_string).to eq "a"
+    end
+
+    it "does not show a hidden letter" do
+
+    end
+  end
+
   it "#build_state_message" do
     allow(engine).to receive(:progress).and_return(progress)
     allow(engine).to receive(:lives).and_return(lives)
