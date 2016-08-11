@@ -3,9 +3,5 @@
 require "bundler/setup"
 require "hangman"
 
-game = Hangman::Game.new
-validator = Hangman::CaseInsensitiveValidator.new
-word_picker = Hangman::WordPicker.new
-engine = Hangman::Engine.new(word: word_picker.pick, lives: 5, validator: validator)
-view = Hangman::ConsoleView.new(engine: engine)
-game.run(engine: engine, view: view)
+runner = Hangman::Runner.new
+runner.run

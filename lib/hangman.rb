@@ -2,6 +2,20 @@ require 'engine'
 require 'views'
 
 module Hangman
+  class Runner
+    def initialize
+      @game = Hangman::Game.new
+      validator = Hangman::CaseInsensitiveValidator.new
+      word_picker = Hangman::WordPicker.new
+      @engine = Hangman::Engine.new(word: word_picker.pick, lives: 5, validator: validator)
+      @view = Hangman::ConsoleView.new(engine: @engine)
+    end
+
+    def run
+      @game.run(engine: @engine, view: @view)
+    end
+  end
+
   class Game
     def run(engine:, view:)
       view.welcome

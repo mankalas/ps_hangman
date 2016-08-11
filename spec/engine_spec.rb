@@ -6,18 +6,18 @@ describe Hangman::Engine do
 
   let(:word) { "HoRSe" }
   let(:lives) { 5 }
-  let(:validator) { double("Hangman::Validator") }
+  let(:validator) { instance_double(Hangman::Validator) }
   let(:engine) { Hangman::Engine.new(word: word,
                                      lives: lives,
                                      validator: validator) }
-  context "#progress" do
+  describe "#progress" do
     it "returns the validator's progress" do
-      allow(validator).to receive(:progress).with(word).and_return(:progress_hash)
+      expect(validator).to receive(:progress).with(word).and_return(:progress_hash)
       expect(engine.progress).to eq :progress_hash
     end
   end
 
-  context "#guess" do
+  describe"#guess" do
     context "when no guess has been made yet" do
       it "player has full lives" do
         expect(engine.lives).to eq lives
@@ -26,22 +26,22 @@ describe Hangman::Engine do
 
     context "when one letter has been rightly guessed" do
       it "player does not lose any life" do
-        allow(validator).to receive(:validate).and_return(true)
+        expect(validator).to receive(:validate).and_return(true)
         expect{ engine.guess('H') }.not_to change { engine.lives }
       end
     end
 
     context "when one letter has been wrongly guessed" do
       it "player loses a life" do
-        allow(validator).to receive(:validate).and_return(false)
+        expect(validator).to receive(:validate).and_return(false)
         expect{ engine.guess('x') }.to change { engine.lives }.by(-1)
       end
     end
   end
 
   context "when the word has been guessed" do
-    before(:each) do
-      allow(validator).to receive(:word_guessed?).and_return(true)
+    before do
+      expect(validator).to receive(:word_guessed?).and_return(true)
     end
 
     it "is over" do
@@ -54,9 +54,9 @@ describe Hangman::Engine do
   end
 
   context "when all lives have been lost" do
-    before(:each) do
-      allow(engine).to receive(:no_more_life?).and_return(true)
-      allow(validator).to receive(:word_guessed?).and_return(false)
+    before do
+      expect(engine).to receive(:no_more_life?).and_return(true)
+      expect(validator).to receive(:word_guessed?).and_return(false)
     end
 
     it "is over" do
