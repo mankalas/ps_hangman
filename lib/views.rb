@@ -1,14 +1,21 @@
 #require 'colorize'
 
 module Hangman
-
   class View
+    PLACEHOLDER = '?'
+
     def initialize(engine:)
       @engine = engine
     end
 
     def input_sane?(input)
       !!(input =~ /^[[:alpha:]]$/)
+    end
+
+    def build_state_string
+      @engine.word.each_char.map do |char|
+        @engine.progress[char] ? char : PLACEHOLDER
+      end.join
     end
   end
 

@@ -2,6 +2,8 @@ require 'set'
 
 module Hangman
   class Validator
+    attr_reader :guessed_letters
+
     def initialize
       @guessed_letters = Set.new
     end

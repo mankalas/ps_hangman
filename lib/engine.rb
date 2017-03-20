@@ -15,7 +15,15 @@ module Hangman
     end
 
     def guess(letter)
-      @lives -= 1 unless @validator.validate(letter, @word)
+      correct_guess = @validator.validate(letter, @word)
+      @lives -= 1 unless correct_guess
+      correct_guess
+    end
+
+    def guess_word(word)
+      correct_guess = @word == word
+      @lives -= 1 unless correct_guess
+      correct_guess
     end
 
     def game_over?
@@ -27,7 +35,8 @@ module Hangman
     end
 
     def no_more_life?
-      @lives < 0
+      @lives <= 0
     end
+    alias_method :lost?, :no_more_life?
   end
 end
